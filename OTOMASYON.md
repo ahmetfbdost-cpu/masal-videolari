@@ -31,7 +31,7 @@ ZihinByte YouTube kanalında yayınlamak.
 7. **YouTube'da yayınla:** Metricool `createScheduledPost`, `blogId: 7246301`, ağ `youtube`,
    media = `https://github.com/ahmetfbdost-cpu/masal-videolari/raw/main/masallar/NNN-ad/video.mp4`,
    `youtubeData: {title, type: "video", privacy: "public", madeForKids: true, category: "FILM_ANIMATION",
-   isAiGeneratedContent: true, tags: [...]}`; yayın saati: aynı gün 18:00 (Europe/Istanbul).
+   isAiGeneratedContent: true, tags: [...]}`; yayın saati: aynı gün 20:00 (Europe/Istanbul); o saat geçmişse 30 dakika sonrası.
 8. **Rapor:** Kullanıcıya masal adı, süre, Metricool planner bağlantısı ve kullanılan ElevenLabs kredisini bildir.
 
 ## Notlar

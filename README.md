@@ -4,7 +4,7 @@
 
 - `masallar/` — her masalın metni, sahne planı ve videosu
 - `pipeline/` — çizim, animasyon ve video üretim kodu (Python + Pillow + ffmpeg)
-- `OTOMASYON.md` — haftalık zamanlanmış görevin izlediği adımlar
+- `OTOMASYON.md` — günlük zamanlanmış görevin (her gün 17:47) izlediği adımlar
 
 | No | Masal | Süre |
 |----|-------|------|
