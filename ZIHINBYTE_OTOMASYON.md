@@ -11,6 +11,12 @@ Kullanıcıya soru sorulmaz; her karar burada yazılı kurallara göre verilir. 
 
 "Gün tek/çift" = ayın gününe göre. Haftanın her günü (hafta sonu dahil) yayın vardır.
 
+## Kural: her paylaşım hem Instagram hem YouTube'da yayınlanır
+- 10:00 Reels → tek gönderi, `providers:[instagram, youtube]` (YouTube `short`).
+- 18:00 Story → tek gönderi, `providers:[instagram, youtube]`; Instagram `STORY`, YouTube `short` (başlık + açıklama `text` YouTube için kullanılır, Story'de görünmez).
+- 18:00 Carousel → (a) Instagram `POST` carousel gönderisi, (b) aynı slaytlardan ffmpeg ile dikey video (1080x1920 üzerine ortalanmış 1080x1350 slaytlar, her slayt 3 sn, müzikli) üretip ayrı bir YouTube `short` gönderisi, aynı saatte (18:00).
+- Hiçbir paylaşım yalnız tek platformda bırakılmaz.
+
 ## Adımlar
 1. **Depoyu güncelle:** `ahmetfbdost-cpu/masal-videolari` (yoksa `add_repo`, push erişimiyle) klonla, `git pull origin main`.
 2. **Tekrar kontrolü:** `zihinbyte/icerik_gunlugu.md` ve `zihinbyte/*/` klasörlerini oku; son 30 günde işlenmiş konuları tekrar etme.
