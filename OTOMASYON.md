@@ -28,14 +28,20 @@ ZihinByte YouTube kanalında yayınlamak.
 5. **Videoyu üret:** `python3 build_video.py plan` → `audio` → `video 0 2` ve `video 1 2` (paralel) →
    iki parçayı birleştirip sesi ekle, `-tune animation -crf 27 -b:a 96k` ile < 30 MB `video.mp4` üret.
 6. **Depoya koy:** `masallar/NNN-ad/` içine `masal.md`, `scenes.json`, `video.mp4`, `onizleme.jpg` ekle; commit + push.
-7. **YouTube'da yayınla:** Metricool `createScheduledPost`, `blogId: 7246301`, ağ `youtube`,
-   media = `https://github.com/ahmetfbdost-cpu/masal-videolari/raw/main/masallar/NNN-ad/video.mp4`,
-   `youtubeData: {title, type: "video", privacy: "public", madeForKids: true, category: "FILM_ANIMATION",
-   isAiGeneratedContent: true, tags: [...]}`; yayın saati: aynı gün 20:00 (Europe/Istanbul); o saat geçmişse 30 dakika sonrası.
-8. **Rapor:** Kullanıcıya masal adı, süre, Metricool planner bağlantısı ve kullanılan ElevenLabs kredisini bildir.
+7. **YouTube'da yayınla — ana yol Zapier:** `execute_zapier_write_action`, `selected_api: "YouTubeV4CLIAPI"`,
+   `action: "upload_video"`, `tool_name: "youtube_upload_video"`; params: `title`, `description` (sonuna
+   "Seslendirme yapay zekâ ile üretilmiştir."), `video` = `https://github.com/ahmetfbdost-cpu/masal-videolari/raw/main/masallar/NNN-ad/video.mp4`,
+   `privacy_status: "public"`, `tags`, `default_language: "tr"`, `default_audio_language: "tr"`, `category_id: "1"`,
+   `made_for_kids: "true"`, `notify_subscribers: "true"`. Hemen yayınlanır; `channelTitle == "ZihinByte"` ve `play_url`'yi doğrula.
+   **Yedek yol (yalnızca Zapier hata verirse):** Metricool `createScheduledPost`, `blogId: 7246301`, ağ `youtube`,
+   aynı media bağlantısı, `youtubeData: {title, type: "video", privacy: "public", madeForKids: true,
+   category: "FILM_ANIMATION", isAiGeneratedContent: true, tags}`, 15 dakika sonrası; 20 dakika sonra durumunu kontrol et.
+   Aynı masalı iki kez yayınlama.
+8. **Rapor:** Kullanıcıya masal adı, süre, yayın yolu (Zapier/Metricool), YouTube bağlantısı ve kullanılan ElevenLabs kredisini bildir.
 
 ## Notlar
 - Metricool medya bağlantısını kendi sunucusuna kopyalar; GitHub bağlantısı herkese açık olmalı (depo Public).
 - YouTube ayarları: `madeForKids: true` (çocuk içeriği), `isAiGeneratedContent: true` (yapay zekâ seslendirmesi).
 - Masal başına ElevenLabs maliyeti ~6.500 kredi.
-- İlk masal (001) 7 Ekim 2026'da yayınlandı.
+- İlk masal (001) 7 Ekim 2026'da Zapier ile yayınlandı: https://www.youtube.com/watch?v=CM0lm6RBsjg
+- Metricool hesabı plan sınırına ulaştığı için yedek konumunda.
