@@ -29,7 +29,13 @@ ZihinByte YouTube kanalında yayınlamak.
    iki parçayı birleştirip sesi ekle, `-tune animation -crf 27 -b:a 96k` ile < 30 MB `video.mp4` üret.
 6. **Depoya koy:** `masallar/NNN-ad/` içine `masal.md`, `scenes.json`, `video.mp4`, `onizleme.jpg` ekle; commit + push.
 7. **YouTube'da yayınla:** Metricool `createScheduledPost`, `blogId: 7246301`, ağ `youtube`,
-   media = `https://github.com/<kullanıcı>/masal-videolari/raw/main/masallar/NNN-ad/video.mp4`,
+   media = `https://github.com/ahmetfbdost-cpu/masal-videolari/raw/main/masallar/NNN-ad/video.mp4`,
    `youtubeData: {title, type: "video", privacy: "public", madeForKids: true, category: "FILM_ANIMATION",
    isAiGeneratedContent: true, tags: [...]}`; yayın saati: aynı gün 18:00 (Europe/Istanbul).
 8. **Rapor:** Kullanıcıya masal adı, süre, Metricool planner bağlantısı ve kullanılan ElevenLabs kredisini bildir.
+
+## Notlar
+- Metricool medya bağlantısını kendi sunucusuna kopyalar; GitHub bağlantısı herkese açık olmalı (depo Public).
+- YouTube ayarları: `madeForKids: true` (çocuk içeriği), `isAiGeneratedContent: true` (yapay zekâ seslendirmesi).
+- Masal başına ElevenLabs maliyeti ~6.500 kredi.
+- İlk masal (001) 7 Ekim 2026'da yayınlandı.
