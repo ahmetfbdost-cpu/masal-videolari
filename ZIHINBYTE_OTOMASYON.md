@@ -35,11 +35,15 @@ Kullanıcıya soru sorulmaz; her karar burada yazılı kurallara göre verilir. 
    - Carousel, `<GUN>T18:00:00`: `providers:[instagram]`, `media:[slayt URL'leri sırayla]`, `text` = açıklama + hashtag, `instagramData:{type:"POST", isAiGenerated:true}`.
    - `publicationDate:{dateTime:"<GUN>T..", timezone:"Europe/Istanbul"}`. Tarih geçmişteyse (ör. 18:00 gönderisi için saat geçtiyse) en yakın gelecek dakikaya (+10 dk) ayarla.
 9. **Doğrula:** `getScheduledPosts` ile iki gönderiyi gör. Hata varsa nedenini ve hangi adımda olduğunu yaz; sahte başarı bildirme.
-10. **Rapor:** Kullanıcıya kısaca: bugünün konuları, Reels/Story/Carousel durumu, Metricool planner bağlantıları, kullanılan ElevenLabs kredisi, varsa sorun.
+10. **Temizle (iş bitince sil):** `getScheduledPosts` yanıtında gönderilerin `media` adresleri `static.metricool.com` ise Metricool dosyayı kendi sunucusuna almış demektir.
+    O zaman `git rm -r zihinbyte/<GUN>/` ile bugünün video/slayt dosyalarını depodan sil (ve önceki günlerden kalan `zihinbyte/20*/` klasörlerini de), `icerik_gunlugu.md` ve `pipeline/` dosyalarını koru, commit + push et.
+    `media` hâlâ GitHub adresiyse silme; raporda belirt.
+11. **Rapor:** Kullanıcıya kısaca: bugünün konuları, Reels/Story/Carousel durumu, Metricool planner bağlantıları, kullanılan ElevenLabs kredisi, varsa sorun.
 
 ## Notlar
 - Metricool medyayı kendi sunucusuna kopyalar; depo **Public** olmalıdır.
 - Her Reels sonunda "Kaydet" + "Takip et: @zihinbyte.tr" çağrısı olur; açıklama bir soruyla biter (yorum artırır).
 - Reels başına ElevenLabs maliyeti ≈ 300 kredi (tek varyasyon).
 - Telif: müzik ve efektler `engine.py` içinde sentezlenir; dış müzik/görsel kullanma.
+- Depo geçmişinde silinen dosyaların eski sürümleri kalır (git doğası); depoda çalışma dosyası bırakılmaz.
 - 8 Ekim 2026 (Reels + Story) elle hazırlandı ve zamanlandı; otomasyon 9 Ekim'den başlar.
