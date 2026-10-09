@@ -8,8 +8,10 @@ spec.json örnekleri:
   {"template":"question","kicker":"SİZE SORUYORUZ","title":"Şirketinizde BT sorunu çıkınca ilk kimi arıyorsunuz?","subtitle":"Cevabınızı yorumlarda paylaşın"}
   {"template":"compare","kicker":"MALİYET","title":"Reaktif mi, proaktif mi?","left_title":"Arıza olunca","left_items":["..."],"right_title":"Önceden önlem","right_items":["..."]}
 Boyut: 1080x1350 (LinkedIn için 4:5 dikey).
+Logo: linkedin/arac/logo.png (veya .svg/.jpg) varsa otomatik kullanılır; yoksa "TrPulseIT" yazı logosu.
+Alt sağ köşe: "footer" alanı (varsayılan www.trpulseit.com).
 """
-import json, sys, html
+import json, sys, html, base64, os
 from playwright.sync_api import sync_playwright
 
 W, H = 1080, 1350
@@ -71,7 +73,8 @@ h1.big{{font-size:92px}} h1.mid{{font-size:66px;margin-bottom:46px}}
 .col ul{{list-style:none;display:flex;flex-direction:column;gap:18px}} .col li{{font-size:31px;line-height:1.3;color:#DCE6F2}}
 .pulse{{position:absolute;left:0;right:0;bottom:150px;width:100%;height:120px;opacity:.9}}
 .foot{{position:absolute;left:96px;right:96px;bottom:62px;display:flex;justify-content:space-between;align-items:center}}
-.brand{{font-weight:800;font-size:44px;letter-spacing:-.01em}} .brand b{{color:{CYAN}}}
+.brand{{font-weight:800;font-size:44px;letter-spacing:-.01em;display:flex;align-items:center}} .brand b{{color:{CYAN}}}
+.brand img{{max-height:84px;max-width:420px;object-fit:contain}}
 .tag{{font-size:26px;color:{MUTED};font-weight:500}}
 """
 
@@ -84,10 +87,20 @@ FIT_JS = """
   return w.scrollHeight<=w.clientHeight+2; }
 """
 
+HERE = os.path.dirname(os.path.abspath(__file__))
+def brand_html():
+    """linkedin/arac/ altında logo.png / logo.svg / logo.jpg varsa onu kullan, yoksa yazı logosu."""
+    for name, mime in (("logo.png","image/png"),("logo.svg","image/svg+xml"),("logo.jpg","image/jpeg")):
+        f = os.path.join(HERE, name)
+        if os.path.exists(f):
+            data = base64.b64encode(open(f,"rb").read()).decode()
+            return f'<img src="data:{mime};base64,{data}" alt="TrPulseIT">'
+    return "Tr<b>Pulse</b>IT"
+
 def render(spec, out):
     page_html = f"""<!doctype html><html><head><meta charset="utf-8"><style>{CSS}</style></head>
 <body><div class="grid"></div><div class="wrap">{body(spec)}</div>{PULSE}
-<div class="foot"><div class="brand">tr<b>pulse</b>it</div><div class="tag">{e(spec.get("footer","Bilişim Çözümleri"))}</div></div></body></html>"""
+<div class="foot"><div class="brand">{brand_html()}</div><div class="tag">{e(spec.get("footer","www.trpulseit.com"))}</div></div></body></html>"""
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(viewport={"width": W, "height": H})
