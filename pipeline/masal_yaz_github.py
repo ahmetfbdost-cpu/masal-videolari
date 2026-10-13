@@ -45,6 +45,17 @@ KURALLAR
 - Yanıtı YALNIZCA geçerli JSON olarak ver, başka hiçbir şey yazma."""
 
 
+class _KeepPost(urllib.request.HTTPRedirectHandler):
+    """Yönlendirmede POST gövdesini koru (urllib varsayılanı GET'e çevirir)."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        print(f'yönlendirme {code} -> {newurl}', flush=True)
+        return urllib.request.Request(newurl, data=req.data, headers=dict(req.header_items()), method='POST')
+
+
+_opener = urllib.request.build_opener(_KeepPost)
+
+
 def call(messages, model, max_tokens=4000):
     tok = os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
     if not tok:
@@ -52,8 +63,9 @@ def call(messages, model, max_tokens=4000):
     body = json.dumps(dict(model=model, messages=messages, temperature=0.9, max_tokens=max_tokens,
                            response_format={'type': 'json_object'})).encode()
     req = urllib.request.Request(URL, body, {'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
-                                             'Accept': 'application/json'})
-    with urllib.request.urlopen(req, timeout=240) as r:
+                                             'Accept': 'application/vnd.github+json',
+                                             'X-GitHub-Api-Version': '2022-11-28'}, method='POST')
+    with _opener.open(req, timeout=240) as r:
         raw = r.read().decode('utf-8', 'replace')
     try:
         j = json.loads(raw)
