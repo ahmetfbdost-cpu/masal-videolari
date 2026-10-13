@@ -40,13 +40,16 @@ jobs:
   masal:
     runs-on: ubuntu-latest
     timeout-minutes: 170
+    defaults:
+      run:
+        shell: bash -eo pipefail {0}
     env:
       TZ: Europe/Istanbul
       PYTHONUNBUFFERED: '1'
       TTS_SES: ${{ vars.TTS_SES || 'tr-TR-EmelNeural' }}
       TTS_HIZ: ${{ vars.TTS_HIZ || '-8%' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 30
 
@@ -79,9 +82,9 @@ jobs:
           MODELLER: ${{ vars.MODELLER || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini' }}
         run: |
           if [ "${{ steps.islem.outputs.islem }}" = "gerekirse-github-models" ]; then
-            python3 pipeline/masal_yaz_github.py --gerekirse
+            python3 pipeline/masal_yaz_github.py --gerekirse 2>&1 | tee -a /tmp/calisma.log
           else
-            python3 pipeline/masal_yaz_github.py
+            python3 pipeline/masal_yaz_github.py 2>&1 | tee -a /tmp/calisma.log
           fi
           python3 pipeline/readme_guncelle.py
           git add -A masallar README.md
@@ -96,7 +99,7 @@ jobs:
           PARCA: '4'
         run: |
           touch /tmp/uretilenler.txt
-          python3 pipeline/uret.py --bekleyenler
+          python3 pipeline/uret.py --bekleyenler 2>&1 | tee -a /tmp/calisma.log
 
       - name: Videoları GitHub Releases'a koy
         env:
@@ -130,7 +133,7 @@ jobs:
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YOUTUBE_GIZLILIK: ${{ vars.YOUTUBE_GIZLILIK || 'public' }}
-        run: python3 pipeline/youtube_yukle.py --bekleyenler
+        run: python3 pipeline/youtube_yukle.py --bekleyenler 2>&1 | tee -a /tmp/calisma.log
 
       - name: Sonuçları kaydet
         run: |
@@ -150,7 +153,8 @@ jobs:
           r = dict(zaman=datetime.datetime.now().isoformat(timespec='minutes'), sonuc='${{ job.status }}',
                    tetik='${{ github.event_name }}', islem='${{ steps.islem.outputs.islem }}',
                    calisma='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-                   uretilenler=open('/tmp/uretilenler.txt').read().split() if os.path.exists('/tmp/uretilenler.txt') else [])
+                   uretilenler=open('/tmp/uretilenler.txt').read().split() if os.path.exists('/tmp/uretilenler.txt') else [],
+                   gunluk_sonu=open('/tmp/calisma.log', errors='replace').read().splitlines()[-60:] if os.path.exists('/tmp/calisma.log') else [])
           json.dump(r, open('durum/son_calisma.json', 'w'), ensure_ascii=False, indent=2)
           EOF
           git add durum/son_calisma.json
