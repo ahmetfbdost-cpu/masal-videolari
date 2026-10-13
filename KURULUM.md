@@ -1,6 +1,6 @@
 # Kurulum — bir kez yapılacaklar
 
-Video üretimi (Edge TTS + animasyon + GitHub Actions) hiçbir kurulum gerektirmez; depo herkese açık olduğu sürece çalışır.
+Video üretimi (Piper seslendirme + animasyon + GitHub Actions) hiçbir kurulum gerektirmez; depo herkese açık olduğu sürece çalışır.
 Aşağıdakiler isteğe bağlı iki ücretsiz parçayı açar.
 
 ## A) Gemini anahtarı (5 dakika) — doğal anlatıcı sesi + yedek yazar
