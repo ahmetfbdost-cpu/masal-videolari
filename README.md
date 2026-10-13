@@ -12,5 +12,5 @@
 | No | Masal | Süre | Ses | Yazar | Durum |
 |----|-------|------|-----|-------|-------|
 | 001 | [Minik Kirpi Fındık ve Kayıp Ay Işığı](https://www.youtube.com/watch?v=CM0lm6RBsjg) | 9:11 | ElevenLabs Ela – Storyteller | Claude | yayında |
-| 002 | Sabırsız Sincap Pıtır ve Minik Fidan | – | – | Claude | yazıldı, video bekliyor |
+| 002 | [Sabırsız Sincap Pıtır ve Minik Fidan](https://github.com/ahmetfbdost-cpu/masal-videolari/releases/download/masal-002/video.mp4) | 8:47 | Piper tr_TR-dfki-medium | Claude | video hazır, yayın bekliyor |
 <!-- /MASAL_TABLOSU -->

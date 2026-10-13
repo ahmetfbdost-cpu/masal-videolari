@@ -23,5 +23,9 @@
     "okul öncesi"
   ],
   "yazar": "Claude",
-  "durum": "yazildi"
+  "durum": "video_hazir",
+  "sure": "8:47",
+  "ses": "Piper tr_TR-dfki-medium",
+  "video_uretim": "2026-10-13T17:15+03:00",
+  "video_url": "https://github.com/ahmetfbdost-cpu/masal-videolari/releases/download/masal-002/video.mp4"
 }
