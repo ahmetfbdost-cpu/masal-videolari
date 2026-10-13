@@ -1,3 +1,2 @@
-islem=github-models-yeni-masal
-# Bu dosyayı değiştirip push etmek workflow'u tetikler. islem: bekleyenleri-uret | gerekirse-github-models | github-models-yeni-masal
-# son: 2026-10-13 dördüncü deneme (yönlendirme)
+islem=bekleyenleri-uret
+# Bu dosyayı değiştirip push etmek workflow'u tetikler. islem: bekleyenleri-uret | gerekirse-yedek | yedek-yeni-masal

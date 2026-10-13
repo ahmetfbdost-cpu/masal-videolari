@@ -1,0 +1,27 @@
+{
+  "no": 2,
+  "baslik": "Sabırsız Sincap Pıtır",
+  "alt_baslik": "ve Minik Fidan",
+  "tarih": "2026-10-13",
+  "deger": "Sabır, sevgiyle beklemek",
+  "karakterler": {
+    "Pıtır": "sincap",
+    "Cıvıl": "kus",
+    "Vıvık": "kurbaga",
+    "Baykuş Huhu": "baykus"
+  },
+  "ozet": "Her şeyin hemen olmasını isteyen sincap Pıtır, bulduğu fındık tohumunu eker ve her gün kazıp bakar. Arkadaşları ve bilge Baykuş Huhu sayesinde sabrın sevgiyle beklemek olduğunu öğrenir.",
+  "aciklama": "Sabırsız Sincap Pıtır, ektiği tohumun hemen ağaç olmasını ister. Ama tohumlar acele etmez! Bu sıcacık uyku masalında çocuklar, beklemenin sıkıcı değil sevgi dolu olabileceğini Pıtır ve arkadaşlarıyla birlikte keşfediyor.",
+  "etiketler": [
+    "masal",
+    "çocuk masalları",
+    "uyku masalı",
+    "sabır",
+    "sincap masalı",
+    "türkçe masal",
+    "masal dinle",
+    "okul öncesi"
+  ],
+  "yazar": "Claude",
+  "durum": "yazildi"
+}

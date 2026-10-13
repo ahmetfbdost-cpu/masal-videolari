@@ -2,7 +2,7 @@
 
 Her masal için `scenes.py` dosyasını elle yeniden yazmak yerine, masal klasöründeki
 `sahne_plani.json` dosyasından sahneleri otomatik kurar. Bu sayede masalı yazan model
-(Claude veya GitHub Models) yalnızca kısıtlı bir sözlükten seçim yapar, kod yazmaz.
+(Claude veya Gemini yedek yazarı) yalnızca kısıtlı bir sözlükten seçim yapar, kod yazmaz.
 
 sahne_plani.json biçimi:
 {
@@ -43,8 +43,8 @@ DUYGULAR = {'normal': 'normal', 'mutlu': 'happy', 'korkmus': 'scared', 'uzgun': 
 EFEKTLER = ('ay', 'ay_bulutlu', 'gunes', 'ates_bocekleri', 'muzik', 'kelebekler', 'kuslar', 'bulutlar', 'elmalar',
             'yildiz_kaymasi')
 FLYERS = {'firefly', 'bird', 'butterfly'}
-SCALE = {'hedgehog': 0.85, 'rabbit': 0.8, 'turtle': 0.72, 'owl': 0.8, 'squirrel': 0.75, 'frog': 0.75,
-         'bird': 0.7, 'butterfly': 1.0, 'firefly': 0.85}
+SCALE = {'hedgehog': 0.85, 'rabbit': 0.8, 'turtle': 0.72, 'owl': 1.0, 'squirrel': 1.05, 'frog': 0.9,
+         'bird': 0.85, 'butterfly': 1.2, 'firefly': 0.9}
 BIRD_COLORS = ['#5DA9E9', '#F2B544', '#E9736B', '#8BC48A']
 BUTTERFLY_COLORS = ['#F28FB2', '#B79CED', '#F7C548', '#7FD1C7']
 
@@ -92,8 +92,8 @@ def L(img, x, y, **kw):
 _bg_cache = {}
 
 
-def background(mekan, zaman, seed=0):
-    k = (mekan, zaman, seed)
+def background(mekan, zaman, seed=0, sun=True):
+    k = (mekan, zaman, seed, sun)
     if k in _bg_cache:
         return _bg_cache[k]
     c = PAL[zaman]
@@ -101,7 +101,7 @@ def background(mekan, zaman, seed=0):
     b = BG(W, H, c['sky'])
     if zaman != 'gunduz':
         b.stars(110 if night else 40, 0.5 if night else 0.35)
-    else:
+    elif sun:
         b.circ(1650, 210, 90, hexc('#FFE27A'), None)
     b.hill(760, 60, c['far'], 2 + seed, 0.8)
     if mekan == 'yuva':
@@ -300,7 +300,7 @@ def build_scene(spec, chars, idx, ana):
         x = slots[i]
         flip = x > 1000 and i > 0  # sağdakiler sola baksın (sprite'lar sağa bakıyor)
         name = TURLER[species]
-        s = 1.0 if c.get('ad') == ana else 0.92
+        s = 1.12 if c.get('ad') == ana else 0.95
         if mekan == 'dere' and name not in FLYERS:
             s *= 0.85
         wk = None
@@ -337,7 +337,7 @@ def build(plan):
     t_layers = [char_layer(chars[ana], 1000, ground_y(m0), [('happy', 0)], False, 1.35)]
     if z0 != 'gunduz':
         t_layers.insert(0, L(art.moon_sprite(90), 1680, 760, z=1))
-    S['title'] = dict(bg=background(m0, z0), layers=t_layers, title=True)
+    S['title'] = dict(bg=background(m0, z0, sun=False), layers=t_layers, title=True)
     # kapanış: tüm karakterler mutlu, elmalar düşer
     names = list(chars)[:5]
     end_spec = dict(mekan=scenes[-1].get('mekan', 'yuva'), zaman='gece',

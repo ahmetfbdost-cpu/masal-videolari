@@ -1,0 +1,20 @@
+{
+ "baslik": "Sabırsız Sincap Pıtır",
+ "alt_baslik": "ve Minik Fidan",
+ "karakterler": {"Pıtır": "sincap", "Cıvıl": "kus", "Vıvık": "kurbaga", "Baykuş Huhu": "baykus"},
+ "ana_karakter": "Pıtır",
+ "sahneler": [
+  {"mekan": "yuva", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "mutlu"}], "efektler": ["kelebekler"], "hareket": "dur"},
+  {"mekan": "cayir", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "normal>mutlu"}, {"ad": "Cıvıl", "duygu": "normal"}], "efektler": ["bulutlar"], "hareket": "dur"},
+  {"mekan": "tepe", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "mutlu>saskin"}], "efektler": ["kuslar"], "hareket": "yuru"},
+  {"mekan": "tepe", "zaman": "aksam", "karakterler": [{"ad": "Pıtır", "duygu": "uzgun"}, {"ad": "Vıvık", "duygu": "mutlu"}], "efektler": [], "hareket": "dur"},
+  {"mekan": "tepe", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "saskin"}], "efektler": ["bulutlar"], "hareket": "dur"},
+  {"mekan": "tepe", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "uzgun"}, {"ad": "Cıvıl", "duygu": "normal"}], "efektler": [], "hareket": "dur"},
+  {"mekan": "orman", "zaman": "aksam", "karakterler": [{"ad": "Pıtır", "duygu": "uzgun>normal"}, {"ad": "Baykuş Huhu", "duygu": "normal"}], "efektler": [], "hareket": "yuru"},
+  {"mekan": "orman", "zaman": "gece", "karakterler": [{"ad": "Pıtır", "duygu": "normal>mutlu"}, {"ad": "Baykuş Huhu", "duygu": "mutlu"}], "efektler": ["ay"], "hareket": "dur"},
+  {"mekan": "gol", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "mutlu"}, {"ad": "Vıvık", "duygu": "mutlu"}, {"ad": "Cıvıl", "duygu": "mutlu"}], "efektler": ["muzik"], "hareket": "yuru"},
+  {"mekan": "tepe", "zaman": "gece", "karakterler": [{"ad": "Pıtır", "duygu": "mutlu"}], "efektler": ["ates_bocekleri", "yildiz_kaymasi"], "hareket": "dur"},
+  {"mekan": "tepe", "zaman": "gunduz", "karakterler": [{"ad": "Pıtır", "duygu": "saskin>mutlu"}, {"ad": "Cıvıl", "duygu": "mutlu"}, {"ad": "Vıvık", "duygu": "mutlu"}, {"ad": "Baykuş Huhu", "duygu": "mutlu"}], "efektler": ["kelebekler"], "hareket": "dur"},
+  {"mekan": "gol", "zaman": "aksam", "karakterler": [{"ad": "Pıtır", "duygu": "mutlu"}, {"ad": "Cıvıl", "duygu": "mutlu"}, {"ad": "Vıvık", "duygu": "mutlu"}, {"ad": "Baykuş Huhu", "duygu": "mutlu"}], "efektler": ["muzik", "ay"], "hareket": "dur"}
+ ]
+}

@@ -1,10 +1,10 @@
-"""Ücretsiz yedek yazar: GitHub Models ile yeni bir masal yazar.
+"""Ücretsiz yedek yazar: Google Gemini API (AI Studio ücretsiz katmanı) ile yeni bir masal yazar.
 
-GitHub Actions içinde `permissions: models: read` ve GITHUB_TOKEN ile çalışır (ayrı API anahtarı gerekmez).
+(Önceden GitHub Models kullanılması planlanmıştı; GitHub Models 30 Temmuz 2026'da kapatıldı.)
 Kullanım:
-  python3 pipeline/masal_yaz_github.py              # her durumda yeni masal yaz
-  python3 pipeline/masal_yaz_github.py --gerekirse  # bugün (Europe/Istanbul) yazılmış masal yoksa yaz
-Ortam: GITHUB_TOKEN, MODELLER (virgülle; varsayılan openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini)
+  python3 pipeline/masal_yaz_yedek.py              # her durumda yeni masal yaz
+  python3 pipeline/masal_yaz_yedek.py --gerekirse  # bugün (Europe/Istanbul) yazılmış masal yoksa yaz
+Ortam: GEMINI_API_KEY (GitHub secret), MODELLER (virgülle; varsayılan gemini-2.5-flash,gemini-2.5-flash-lite)
 Yazar: masallar/NNN-ad/{masal.md, scenes.json, sahne_plani.json, meta.json(durum=yazildi)}
 """
 import glob, json, os, re, sys, time, unicodedata
@@ -15,8 +15,7 @@ PIPE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(PIPE)
 sys.path.insert(0, PIPE)
 TR = timezone(timedelta(hours=3))
-URL = 'https://models.github.ai/inference/chat/completions'
-MODELS = [m.strip() for m in os.environ.get('MODELLER', 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini').split(',')
+MODELS = [m.strip() for m in (os.environ.get('MODELLER') or 'gemini-2.5-flash,gemini-2.5-flash-lite').split(',')
           if m.strip()]
 
 # scenes_auto ile aynı sözlük (Pillow gerektirmeden kullanmak için burada da tanımlı)
@@ -45,31 +44,27 @@ KURALLAR
 - Yanıtı YALNIZCA geçerli JSON olarak ver, başka hiçbir şey yazma."""
 
 
-class _KeepPost(urllib.request.HTTPRedirectHandler):
-    """Yönlendirmede POST gövdesini koru (urllib varsayılanı GET'e çevirir)."""
-
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        print(f'yönlendirme {code} -> {newurl}', flush=True)
-        return urllib.request.Request(newurl, data=req.data, headers=dict(req.header_items()), method='POST')
-
-
-_opener = urllib.request.build_opener(_KeepPost)
-
-
-def call(messages, model, max_tokens=4000):
-    tok = os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')
-    if not tok:
-        raise SystemExit('GITHUB_TOKEN yok')
-    body = json.dumps(dict(model=model, messages=messages, temperature=0.9, max_tokens=max_tokens,
-                           response_format={'type': 'json_object'})).encode()
-    req = urllib.request.Request(URL, body, {'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
-                                             'Accept': 'application/vnd.github+json',
-                                             'X-GitHub-Api-Version': '2022-11-28'}, method='POST')
-    with _opener.open(req, timeout=240) as r:
+def call(messages, model, max_tokens=8000):
+    """Gemini API (Google AI Studio ücretsiz katmanı). messages: OpenAI biçiminde liste."""
+    key = os.environ.get('GEMINI_API_KEY')
+    if not key:
+        raise SystemExit('GEMINI_API_KEY yok')
+    system = '\n\n'.join(m['content'] for m in messages if m['role'] == 'system')
+    contents = [dict(role='model' if m['role'] == 'assistant' else 'user', parts=[dict(text=m['content'])])
+                for m in messages if m['role'] != 'system']
+    gen = dict(temperature=0.9, maxOutputTokens=max_tokens, responseMimeType='application/json')
+    if '2.5' in model:
+        gen['thinkingConfig'] = dict(thinkingBudget=1024)
+    body = json.dumps(dict(systemInstruction=dict(parts=[dict(text=system)]), contents=contents,
+                           generationConfig=gen)).encode()
+    url = f'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent'
+    req = urllib.request.Request(url, body, {'x-goog-api-key': key, 'Content-Type': 'application/json'},
+                                 method='POST')
+    with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read().decode('utf-8', 'replace')
     try:
         j = json.loads(raw)
-        txt = j['choices'][0]['message']['content'] or ''
+        txt = ''.join(p.get('text', '') for p in j['candidates'][0]['content']['parts'] if not p.get('thought'))
         txt = re.sub(r'^```(?:json)?|```$', '', txt.strip()).strip()
         return json.loads(txt)
     except Exception as e:
@@ -77,7 +72,7 @@ def call(messages, model, max_tokens=4000):
         raise ValueError(f'yanıt çözülemedi: {e}')
 
 
-def call_any(messages, max_tokens=4000):
+def call_any(messages, max_tokens=8000):
     last = None
     for model in MODELS:
         for attempt in range(2):
@@ -88,14 +83,14 @@ def call_any(messages, max_tokens=4000):
             except urllib.error.HTTPError as e:
                 last = f'{model}: HTTP {e.code} {e.read()[:300]!r}'
                 print(last, flush=True)
-                if e.code in (401, 403, 404):
+                if e.code in (400, 401, 403, 404):
                     break
-                time.sleep(20 if e.code == 429 else 5)
+                time.sleep(30 if e.code == 429 else 5)
             except Exception as e:
                 last = f'{model}: {e}'
                 print(last, flush=True)
                 time.sleep(5)
-    raise SystemExit(f'GitHub Models çağrısı başarısız: {last}')
+    raise SystemExit(f'Gemini çağrısı başarısız: {last}')
 
 
 def slugify(s):
@@ -199,7 +194,7 @@ def write_story(story, model):
     meta = dict(no=no, baslik=title, alt_baslik=sub, tarih=datetime.now(TR).date().isoformat(),
                 deger=story.get('deger', ''), karakterler=chars, ozet=story.get('ozet', ''),
                 aciklama=story.get('youtube_aciklama', ''), etiketler=story.get('etiketler', [])[:12],
-                yazar=f'GitHub Models ({model})', durum='yazildi')
+                yazar=f'Gemini ({model})', durum='yazildi')
     json.dump(meta, open(os.path.join(d, 'meta.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
     print('YAZILDI', d, sum(map(len, texts)), 'karakter', flush=True)
     return d
@@ -207,7 +202,10 @@ def write_story(story, model):
 
 def main():
     if '--gerekirse' in sys.argv and today_exists():
-        print('Bugünün masalı zaten yazılmış; GitHub Models yedeği çalışmadı.')
+        print('Bugünün masalı zaten yazılmış; yedek yazar çalışmadı.')
+        return
+    if not os.environ.get('GEMINI_API_KEY'):
+        print('GEMINI_API_KEY tanımlı değil; yedek yazar atlandı (GitHub → Settings → Secrets → Actions).')
         return
     prev = previous()
     schema1 = {

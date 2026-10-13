@@ -10,4 +10,5 @@
 | No | Masal | Süre | Ses | Yazar | Durum |
 |----|-------|------|-----|-------|-------|
 | 001 | [Minik Kirpi Fındık ve Kayıp Ay Işığı](https://www.youtube.com/watch?v=CM0lm6RBsjg) | 9:11 | ElevenLabs Ela – Storyteller | Claude | yayında |
+| 002 | Sabırsız Sincap Pıtır ve Minik Fidan | – | – | Claude | yazıldı, video bekliyor |
 <!-- /MASAL_TABLOSU -->

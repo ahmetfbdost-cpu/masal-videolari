@@ -1,0 +1,59 @@
+# Sabırsız Sincap Pıtır ve Minik Fidan
+
+**Yaş grubu:** 3–9 yaş · **Tahmini süre:** ~9 dakika · **Konu:** Sabır, sevgiyle beklemek
+
+**Karakterler**
+- **Pıtır:** Her şeyin hemen olmasını isteyen, enerjik küçük sincap
+- **Cıvıl:** Akıllı, yardımsever mavi kuş
+- **Vıvık:** Neşeli, kıkırdak yeşil kurbağa
+- **Baykuş Huhu:** Ormanın en yaşlı ve en bilge baykuşu
+
+---
+
+## Sahne 1 – Gülümseyen Çayır
+
+Bir varmış, bir yokmuş. Yemyeşil tepelerin ardında, rüzgârın papatyaları tek tek okşadığı Gülümseyen Çayır diye bir yer varmış. Bu çayırın kenarındaki yaşlı meşe ağacının kovuğunda Pıtır adında küçük bir sincap yaşarmış. Pıtır'ın kocaman kabarık bir kuyruğu, minicik pembe burnu ve hiç durmayan ayakları varmış. Sabah gözünü açar açmaz dallardan dallara zıplar, bir oraya bir buraya koşarmış. Ama Pıtır'ın bir huyu varmış: Hiç ama hiç beklemeyi sevmezmiş. Her şeyin hemen, şimdi, şu anda olmasını istermiş.
+
+## Sahne 2 – Sihirli Tohum
+
+Bir sabah Pıtır, çayırda koştururken otların arasında parlak, kahverengi, yuvarlak bir şey görmüş. Eğilip bakmış: Kocaman bir fındık tohumuymuş bu! Tam ağzına atacakmış ki tepedeki dalda oturan mavi kuş Cıvıl seslenmiş: "Pıtır, onu yeme! O sihirli bir tohum. Toprağa ekersen, bir gün kocaman bir fındık ağacı olur. Hem de her yıl sana dallar dolusu fındık verir." Pıtır'ın gözleri parlamış. "Kocaman bir ağaç mı? Benim ağacım mı?" diye zıplamış sevinçle. "Hemen ekiyorum!"
+
+## Sahne 3 – Tohumu Ekmek
+
+Pıtır, tohumu sıkı sıkı tutup tepeye koşmuş. Güneşin en güzel vurduğu yeri seçmiş, minik patileriyle toprağı eşelemiş, eşelemiş. Tohumu içine koyup üstünü özenle örtmüş. Sonra derenin kenarına gidip bir yaprak dolusu su getirmiş ve tohumun üstüne şırıl şırıl dökmüş. "İşte oldu!" demiş ellerini çırparak. Sonra oturup beklemeye başlamış. Bir dakika geçmiş, iki dakika geçmiş. Pıtır kuyruğunu sallamış, ayağını yere vurmuş. "Hani ağacım?" diye sormuş. "Neden hâlâ çıkmadı?"
+
+## Sahne 4 – Vıvık Geliyor
+
+Akşam olmuş, gökyüzü pembeye, sonra mora boyanmış. Pıtır hâlâ tepedeymiş. Toprağa öyle dikkatle bakıyormuş ki gözleri neredeyse birbirine değecekmiş. Tam o sırada göl kenarından Vıvık adında yeşil bir kurbağa zıplaya zıplaya gelmiş. "Pıtır, gece oluyor, burada ne yapıyorsun?" diye sormuş. "Ağacımı bekliyorum," demiş Pıtır somurtarak. "Sabahtan beri bekliyorum ama tohum tembellik ediyor." Vıvık kıkır kıkır gülmüş. "Ah Pıtır, tohumlar bir günde ağaç olmaz ki! Hadi yuvana dön, yarın yine bakarsın."
+
+## Sahne 5 – Kazıp Bakmak
+
+Pıtır o gece yatağında bir sağa bir sola dönmüş, gözüne uyku girmemiş. Sabah horozlar ötmeden tepeye koşmuş. Toprağa bakmış: Ne bir yaprak var, ne bir dal. "Belki tohum kayboldu," diye düşünmüş. Ve hiç beklemeden patileriyle toprağı kazıp tohumu çıkarmış. Tohum oradaymış, ama biraz ıslanmış, biraz şişmiş, o kadar. "Hiçbir şey olmamış!" diye söylenmiş Pıtır. Tohumu yeniden gömmüş. Ertesi gün yine kazmış, bir sonraki gün yine. Her seferinde tohum biraz yorulmuş, ama Pıtır bunu bilmiyormuş.
+
+## Sahne 6 – Cıvıl'ın Uyarısı
+
+Dördüncü gün Cıvıl, Pıtır'ın toprağı yine kazdığını görünce dalından aşağı süzülmüş. "Pıtır, ne yapıyorsun öyle?" diye sormuş telaşla. "Ağacım büyüyor mu diye bakıyorum," demiş Pıtır. Cıvıl başını iki yana sallamış. "Sen her gün onu kazıp çıkarırsan, tohum nasıl kök salsın? Tohum karanlıkta, toprağın altında sessizce çalışır. Ona zaman vermelisin." Pıtır kulaklarını düşürmüş. "Ama ben beklemeyi bilmiyorum ki," demiş usulca. "Beklemek bana çok uzun geliyor."
+
+## Sahne 7 – Baykuş Huhu
+
+O akşam Pıtır, üzgün üzgün ormanın içindeki patikada yürüyormuş. Ağaçların arasından bir ses duymuş: "Hu huu, küçük sincap, neden böyle boynun bükük?" Bu, ormanın en yaşlı ve en bilge kuşu Baykuş Huhu'ymuş. Pıtır her şeyi bir bir anlatmış. Baykuş Huhu kocaman gözlerini kırpıştırıp gülümsemiş. "Bak Pıtır," demiş, "şu gördüğün koca ağaçların hepsi bir zamanlar senin tohumun kadar küçüktü. Hiçbiri acele etmedi. Toprağın altında önce köklerini salıp, sonra güneşe uzandılar."
+
+## Sahne 8 – Sevgiyle Beklemek
+
+"Peki ben beklerken ne yapacağım?" diye sormuş Pıtır. Baykuş Huhu kanadını sallamış. "Beklemek, hiçbir şey yapmamak demek değildir yavrum. Tohumuna su getirebilirsin, etrafındaki otları temizleyebilirsin, ona şarkılar söyleyebilirsin. Sabır, sevgiyle beklemektir." Pıtır bir an düşünmüş, sonra yüzü aydınlanmış. "Sevgiyle beklemek..." diye tekrarlamış. "Bunu yapabilirim!" Baykuş Huhu'ya teşekkür etmiş ve tepeye doğru pıtır pıtır koşmuş. Bu kez kazmak için değil, beklemek için gidiyormuş.
+
+## Sahne 9 – Tatlı Günler
+
+Ertesi sabahtan itibaren Pıtır'ın yeni bir alışkanlığı olmuş. Her sabah gölden bir yaprak dolusu su taşıyıp tohumun üstüne dökermiş. Vıvık da ona yardım edermiş, hatta su taşırken ikisi birlikte yarış yaparlarmış. Öğleden sonraları Pıtır tohumun etrafındaki kuru dalları toplar, toprağı yumuşacık tutarmış. Akşamları ise Cıvıl'la birlikte tohuma şarkı söylermiş: "Uyu minik tohum, büyü minik tohum, güneş seni bekler, biz de seni bekleriz." Günler böyle tatlı tatlı geçip gitmiş.
+
+## Sahne 10 – Yıldızlı Gece
+
+Bir gece gökyüzü yıldızlarla doluymuş. Pıtır tepede, tohumun yanında oturmuş, ateşböceklerinin dans edişini izliyormuş. Kendi kendine düşünmüş: "Eskiden beklemek bana çok sıkıcı gelirdi. Ama şimdi her gün yeni bir şey yapıyorum, yeni şarkılar öğreniyorum, arkadaşlarımla gülüyorum." Bir de bakmış ki artık her sabah kazmayı hiç düşünmüyor. Tohumunun toprağın altında, karanlıkta, sessiz sessiz çalıştığına güveniyormuş. Pıtır, farkında olmadan, sabırlı olmayı öğreniyormuş.
+
+## Sahne 11 – Minik Filiz
+
+Tam on dört gün sonra, güzel bir sabah Pıtır tepeye vardığında olduğu yerde donup kalmış. Toprağın içinden minicik, yemyeşil, iki yapraklı bir filiz başını uzatıyormuş! "Çıktı! Çıktı!" diye bağırmış Pıtır, sevinçten takla atarak. Sesini duyan Cıvıl uçarak, Vıvık zıplayarak, Baykuş Huhu de süzülerek gelmiş. Hep birlikte filizin etrafında halka olmuşlar. Baykuş Huhu gülümsemiş: "Gördün mü Pıtır? Sen sabrettin, o da büyüdü. Sabrın meyvesi tatlıdır derler, işte ilk yaprağı bu."
+
+## Sahne 12 – Sabrın Meyvesi
+
+Pıtır o gün arkadaşlarıyla birlikte göl kenarında küçük bir şenlik yapmış. Herkes filiz için bir dilek tutmuş. Pıtır'ın dileği şuymuş: "Bu ağaç büyüsün, gölgesinde bütün orman dinlensin." Fidan yıllar içinde ağır ağır, sabırla büyümüş. Pıtır da büyümüş, ama artık her şeyin hemen olmasını istemezmiş. Güzel şeylerin zaman istediğini, beklerken de sevmeyi, çalışmayı ve gülmeyi öğrenmiş. Onlar ermiş muradına, biz çıkalım kerevetine. Gökten üç elma düşmüş: biri bu masalı dinleyene, biri anlatana, biri de sabırla bekleyen bütün çocuklara.

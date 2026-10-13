@@ -2,11 +2,12 @@
 #
 #  Ana yol   : Claude masalı yazar (masal.md, scenes.json, sahne_plani.json, meta.json durum=yazildi) ve push eder
 #              → bu workflow Edge TTS ile seslendirir, videoyu üretir, GitHub Release'e koyar.
-#  Yedek yol : Her gün 19:17'de (TR) o gün masal yazılmamışsa GitHub Models (ücretsiz) masalı kendisi yazar.
+#  Yedek yol : Her gün 19:17'de (TR) o gün masal yazılmamışsa Gemini API (ücretsiz katman) masalı kendisi yazar
+#              (GEMINI_API_KEY secret'ı gerekir; yoksa bu adım sessizce atlanır).
 #  Yayın     : YOUTUBE_API_YUKLE=evet değişkeni ve YT_* secret'ları varsa YouTube API ile yükler;
 #              yoksa video "video_hazir" kalır ve Claude'un yayın görevi Zapier ile yükler.
 #  Elle tetik: Actions sekmesi → "Masal videosu" → Run workflow, ya da .github/tetik dosyasına
-#              "islem=github-models-yeni-masal" yazıp push etmek.
+#              "islem=yedek-yeni-masal" yazıp push etmek.
 name: Masal videosu
 
 on:
@@ -25,12 +26,11 @@ on:
         default: bekleyenleri-uret
         options:
           - bekleyenleri-uret
-          - gerekirse-github-models
-          - github-models-yeni-masal
+          - gerekirse-yedek
+          - yedek-yeni-masal
 
 permissions:
   contents: write
-  models: read
 
 concurrency:
   group: masal-uretim
@@ -58,7 +58,7 @@ jobs:
         run: |
           I=bekleyenleri-uret
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            I=gerekirse-github-models
+            I=gerekirse-yedek
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             I="${{ inputs.islem }}"
           elif git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" 2>/dev/null | grep -qx '.github/tetik'; then
@@ -75,21 +75,21 @@ jobs:
           git config user.name "masal-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: GitHub Models ile masal yaz (ücretsiz yedek yazar)
+      - name: Gemini ile masal yaz (ücretsiz yedek yazar)
         if: steps.islem.outputs.islem != 'bekleyenleri-uret'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MODELLER: ${{ vars.MODELLER || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODELLER: ${{ vars.MODELLER }}
         run: |
-          if [ "${{ steps.islem.outputs.islem }}" = "gerekirse-github-models" ]; then
-            python3 pipeline/masal_yaz_github.py --gerekirse 2>&1 | tee -a /tmp/calisma.log
+          if [ "${{ steps.islem.outputs.islem }}" = "gerekirse-yedek" ]; then
+            python3 pipeline/masal_yaz_yedek.py --gerekirse 2>&1 | tee -a /tmp/calisma.log
           else
-            python3 pipeline/masal_yaz_github.py 2>&1 | tee -a /tmp/calisma.log
+            python3 pipeline/masal_yaz_yedek.py 2>&1 | tee -a /tmp/calisma.log
           fi
           python3 pipeline/readme_guncelle.py
           git add -A masallar README.md
           if ! git diff --cached --quiet; then
-            git commit -q -m "Yeni masal metni (GitHub Models)"
+            git commit -q -m "Yeni masal metni (Gemini yedek yazar)"
             for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
           fi
 
