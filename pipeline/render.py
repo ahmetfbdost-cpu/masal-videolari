@@ -2,6 +2,7 @@
 import math, json, random, sys, subprocess
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+import os
 import art, scenes
 
 FW, FH = 1920, 1080
@@ -10,6 +11,16 @@ FONT_B = '/usr/share/fonts/opentype/inter/InterDisplay-ExtraBold.otf'
 FONT_S = '/usr/share/fonts/opentype/inter/InterDisplay-SemiBold.otf'
 TITLE = 'Minik Kirpi Fındık'
 SUBTITLE = 've Kayıp Ay Işığı'
+# Şablon tabanlı masallarda (sahne_plani.json) başlık ve sahneler plandan gelir.
+SAHNE_PLANI = os.environ.get('SAHNE_PLANI')
+if SAHNE_PLANI:
+    _pl = json.load(open(SAHNE_PLANI, encoding='utf-8'))
+    TITLE = _pl.get('baslik', TITLE)
+    SUBTITLE = _pl.get('alt_baslik', '')
+# Inter yazı tipi yoksa (ör. farklı sistem) DejaVu'ya düş
+if not os.path.exists(FONT_B):
+    FONT_B = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+    FONT_S = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 
 
 def smooth(t):
@@ -113,9 +124,13 @@ def text_card(lines, sizes, color=(255, 246, 214), stroke=(60, 38, 30)):
 
 class Renderer:
     def __init__(self):
-        self.S = scenes.build()
+        if SAHNE_PLANI:
+            import scenes_auto
+            self.S = scenes_auto.build(SAHNE_PLANI)
+        else:
+            self.S = scenes.build()
         self.rng = random.Random(11)
-        self.title_ims = text_card([TITLE, SUBTITLE], [118, 78])
+        self.title_ims = text_card([TITLE, SUBTITLE or ' '], [118, 78])
         self.end_ims = text_card(['Son', 'Masalı dinlediğin için teşekkürler!'], [150, 56])
         self.note = art.music_note()
         self.flies = [(self.rng.uniform(0, 1), self.rng.uniform(0, 1), self.rng.uniform(0.05, 0.12),

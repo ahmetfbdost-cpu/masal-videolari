@@ -1,0 +1,15 @@
+{
+  "no": 1,
+  "baslik": "Minik Kirpi Fındık",
+  "alt_baslik": "ve Kayıp Ay Işığı",
+  "tarih": "2026-10-07",
+  "deger": "Cesaret, dostluk ve yardımlaşma",
+  "karakterler": {"Fındık": "kirpi", "Pamuk": "tavsan", "Işıl": "ates_bocegi", "Bilge Nine": "kaplumbaga"},
+  "yazar": "Claude",
+  "ses": "ElevenLabs Ela – Storyteller",
+  "sure": "9:11",
+  "durum": "yayinlandi",
+  "video_url": "https://github.com/ahmetfbdost-cpu/masal-videolari/raw/main/masallar/001-minik-kirpi-findik/video.mp4",
+  "youtube_url": "https://www.youtube.com/watch?v=CM0lm6RBsjg",
+  "yayin_yolu": "Zapier"
+}

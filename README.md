@@ -6,6 +6,8 @@
 - `pipeline/` — çizim, animasyon ve video üretim kodu (Python + Pillow + ffmpeg)
 - `OTOMASYON.md` — günlük zamanlanmış görevin (her gün 17:47) izlediği adımlar
 
-| No | Masal | Süre |
-|----|-------|------|
-| 001 | [Minik Kirpi Fındık ve Kayıp Ay Işığı](https://www.youtube.com/watch?v=CM0lm6RBsjg) | 9:11 |
+<!-- MASAL_TABLOSU -->
+| No | Masal | Süre | Ses | Yazar | Durum |
+|----|-------|------|-----|-------|-------|
+| 001 | [Minik Kirpi Fındık ve Kayıp Ay Işığı](https://www.youtube.com/watch?v=CM0lm6RBsjg) | 9:11 | ElevenLabs Ela – Storyteller | Claude | yayında |
+<!-- /MASAL_TABLOSU -->

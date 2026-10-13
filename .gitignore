@@ -1,0 +1,7 @@
+# Videolar depoya değil GitHub Releases'a yüklenir (depo şişmesin). 001 eskiden eklendiği için depoda kalır.
+masallar/*/video.mp4
+# Sesler her çalıştırmada yeniden üretilir. ElevenLabs gibi hazır ses eklemek için: git add -f masallar/NNN-ad/audio/
+masallar/*/audio/
+__pycache__/
+out/
+preview/

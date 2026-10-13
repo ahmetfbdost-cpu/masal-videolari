@@ -44,11 +44,17 @@ def chunks(text, maxlen=95):
 
 
 def plan():
+    import os
     scenes_txt = json.load(open('scenes.json'))
     keys = ['title'] + list(range(1, 13))
     segs = []  # (key, audio_part, a, b, speech_a, speech_b, text)
     ti = 0
-    for part, keylist in (('audio/part1.mp3', keys[:7]), ('audio/part2.mp3', keys[7:])):
+    if os.path.exists('audio/segments.json'):
+        # Edge TTS gibi sahne sahne üretilen seslerde kesim noktaları kesin olarak bilinir
+        for g in json.load(open('audio/segments.json')):
+            k = g['key']
+            segs.append((k, g['part'], g['a'], g['b'], g['sa'], g['sb'], None if k == 'title' else scenes_txt[k - 1]))
+    for part, keylist in ((() if segs else (('audio/part1.mp3', keys[:7]), ('audio/part2.mp3', keys[7:])))):
         sil = silences(part)
         d = duration(part)
         cuts = [0] + [(s + e) / 2 for s, e in sil] + [d]
@@ -209,6 +215,8 @@ if __name__ == '__main__':
     os.makedirs('out', exist_ok=True)
     tl, subs, total = plan()
     nfr = int(total * FPS)
+    if os.environ.get('TEST_SANIYE'):  # hızlı deneme: yalnızca ilk N saniye
+        nfr = min(nfr, int(float(os.environ['TEST_SANIYE']) * FPS))
     if sys.argv[1] == 'plan':
         for s in tl:
             print(s['key'], round(s['start'], 1), round(s['dur'], 1))

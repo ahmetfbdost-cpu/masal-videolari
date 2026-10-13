@@ -1,0 +1,159 @@
+# Ücretsiz masal videosu hattı (GitHub Actions — herkese açık depoda ücretsiz)
+#
+#  Ana yol   : Claude masalı yazar (masal.md, scenes.json, sahne_plani.json, meta.json durum=yazildi) ve push eder
+#              → bu workflow Edge TTS ile seslendirir, videoyu üretir, GitHub Release'e koyar.
+#  Yedek yol : Her gün 19:17'de (TR) o gün masal yazılmamışsa GitHub Models (ücretsiz) masalı kendisi yazar.
+#  Yayın     : YOUTUBE_API_YUKLE=evet değişkeni ve YT_* secret'ları varsa YouTube API ile yükler;
+#              yoksa video "video_hazir" kalır ve Claude'un yayın görevi Zapier ile yükler.
+#  Elle tetik: Actions sekmesi → "Masal videosu" → Run workflow, ya da .github/tetik dosyasına
+#              "islem=github-models-yeni-masal" yazıp push etmek.
+name: Masal videosu
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'masallar/*/sahne_plani.json'
+      - '.github/tetik'
+  schedule:
+    - cron: '17 16 * * *'   # 19:17 Türkiye saati
+  workflow_dispatch:
+    inputs:
+      islem:
+        description: 'Ne yapılsın?'
+        type: choice
+        default: bekleyenleri-uret
+        options:
+          - bekleyenleri-uret
+          - gerekirse-github-models
+          - github-models-yeni-masal
+
+permissions:
+  contents: write
+  models: read
+
+concurrency:
+  group: masal-uretim
+  cancel-in-progress: false
+
+jobs:
+  masal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      TZ: Europe/Istanbul
+      PYTHONUNBUFFERED: '1'
+      TTS_SES: ${{ vars.TTS_SES || 'tr-TR-EmelNeural' }}
+      TTS_HIZ: ${{ vars.TTS_HIZ || '-8%' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 30
+
+      - name: İşlemi belirle
+        id: islem
+        run: |
+          I=bekleyenleri-uret
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            I=gerekirse-github-models
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            I="${{ inputs.islem }}"
+          elif git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" 2>/dev/null | grep -qx '.github/tetik'; then
+            I=$(grep -oP '^islem=\K[a-z-]+' .github/tetik || echo bekleyenleri-uret)
+          fi
+          echo "islem=$I" >> "$GITHUB_OUTPUT"
+          echo "İşlem: $I"
+
+      - name: Araçları kur
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-inter fonts-dejavu-core > /dev/null
+          pip install -q edge-tts numpy pillow
+          git config user.name "masal-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: GitHub Models ile masal yaz (ücretsiz yedek yazar)
+        if: steps.islem.outputs.islem != 'bekleyenleri-uret'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODELLER: ${{ vars.MODELLER || 'openai/gpt-4.1,openai/gpt-4o,openai/gpt-4.1-mini' }}
+        run: |
+          if [ "${{ steps.islem.outputs.islem }}" = "gerekirse-github-models" ]; then
+            python3 pipeline/masal_yaz_github.py --gerekirse
+          else
+            python3 pipeline/masal_yaz_github.py
+          fi
+          python3 pipeline/readme_guncelle.py
+          git add -A masallar README.md
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Yeni masal metni (GitHub Models)"
+            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          fi
+
+      - name: Bekleyen masalların videosunu üret (Edge TTS + animasyon)
+        env:
+          URETILENLER: /tmp/uretilenler.txt
+          PARCA: '4'
+        run: |
+          touch /tmp/uretilenler.txt
+          python3 pipeline/uret.py --bekleyenler
+
+      - name: Videoları GitHub Releases'a koy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          while read -r d; do
+            [ -z "$d" ] && continue
+            no=$(basename "$d" | cut -c1-3)
+            tag="masal-$no"
+            baslik=$(python3 -c "import json,sys;m=json.load(open('$d/meta.json'));print((m.get('baslik','')+' '+m.get('alt_baslik','')).strip())")
+            if gh release view "$tag" > /dev/null 2>&1; then
+              gh release upload "$tag" "$d/video.mp4" "$d/onizleme.jpg" --clobber
+            else
+              gh release create "$tag" "$d/video.mp4" "$d/onizleme.jpg" --title "$no · $baslik" --notes "Masal: $d"
+            fi
+            url="https://github.com/${{ github.repository }}/releases/download/$tag/video.mp4"
+            python3 - "$d" "$url" <<'EOF'
+          import json, sys
+          d, url = sys.argv[1], sys.argv[2]
+          m = json.load(open(f'{d}/meta.json', encoding='utf-8'))
+          m['video_url'] = url
+          json.dump(m, open(f'{d}/meta.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+          EOF
+            echo "Video: $url"
+          done < /tmp/uretilenler.txt
+
+      - name: YouTube API ile yükle (Google denetimi onaylandıktan sonra)
+        if: vars.YOUTUBE_API_YUKLE == 'evet'
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YOUTUBE_GIZLILIK: ${{ vars.YOUTUBE_GIZLILIK || 'public' }}
+        run: python3 pipeline/youtube_yukle.py --bekleyenler
+
+      - name: Sonuçları kaydet
+        run: |
+          python3 pipeline/readme_guncelle.py
+          git add -A masallar README.md
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Masal videosu üretildi"
+            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          fi
+
+      - name: Çalışma raporu
+        if: always()
+        run: |
+          mkdir -p durum
+          python3 - <<'EOF'
+          import json, os, datetime
+          r = dict(zaman=datetime.datetime.now().isoformat(timespec='minutes'), sonuc='${{ job.status }}',
+                   tetik='${{ github.event_name }}', islem='${{ steps.islem.outputs.islem }}',
+                   calisma='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}',
+                   uretilenler=open('/tmp/uretilenler.txt').read().split() if os.path.exists('/tmp/uretilenler.txt') else [])
+          json.dump(r, open('durum/son_calisma.json', 'w'), ensure_ascii=False, indent=2)
+          EOF
+          git add durum/son_calisma.json
+          git commit -q -m "Çalışma raporu: ${{ job.status }}" || exit 0
+          git stash -q -u || true
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
