@@ -1,7 +1,7 @@
 # Ücretsiz masal videosu hattı (GitHub Actions — herkese açık depoda ücretsiz)
 #
 #  Ana yol   : Claude masalı yazar (masal.md, scenes.json, sahne_plani.json, meta.json durum=yazildi) ve push eder
-#              → bu workflow Edge TTS ile seslendirir, videoyu üretir, GitHub Release'e koyar.
+#              → bu workflow seslendirir (Gemini TTS → Edge TTS → Piper), videoyu üretir, GitHub Release'e koyar.
 #  Yedek yol : Her gün 19:17'de (TR) o gün masal yazılmamışsa Gemini API (ücretsiz katman) masalı kendisi yazar
 #              (GEMINI_API_KEY secret'ı gerekir; yoksa bu adım sessizce atlanır).
 #  Yayın     : YOUTUBE_API_YUKLE=evet değişkeni ve YT_* secret'ları varsa YouTube API ile yükler;
@@ -46,8 +46,11 @@ jobs:
     env:
       TZ: Europe/Istanbul
       PYTHONUNBUFFERED: '1'
-      TTS_SES: ${{ vars.TTS_SES || 'tr-TR-EmelNeural' }}
-      TTS_HIZ: ${{ vars.TTS_HIZ || '-8%' }}
+      TTS_MOTORLAR: ${{ vars.TTS_MOTORLAR || 'gemini,edge,piper' }}
+      TTS_SES: ${{ vars.TTS_SES }}
+      TTS_HIZ: ${{ vars.TTS_HIZ }}
+      GEMINI_SES: ${{ vars.GEMINI_SES }}
+      PIPER_SES: ${{ vars.PIPER_SES }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -71,7 +74,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg fonts-inter fonts-dejavu-core > /dev/null
-          pip install -q edge-tts numpy pillow
+          pip install -q edge-tts piper-tts numpy pillow
           git config user.name "masal-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -93,8 +96,15 @@ jobs:
             for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
           fi
 
-      - name: Bekleyen masalların videosunu üret (Edge TTS + animasyon)
+      - name: Piper ses modelini önbellekten al
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/piper
+          key: piper-${{ vars.PIPER_SES || 'tr_TR-dfki-medium' }}
+
+      - name: Bekleyen masalların videosunu üret (seslendirme + animasyon)
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           URETILENLER: /tmp/uretilenler.txt
           PARCA: '4'
         run: |

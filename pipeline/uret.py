@@ -1,4 +1,4 @@
-"""Masal klasöründen videoyu baştan sona üretir (ses yoksa Edge TTS ile seslendirir).
+"""Masal klasöründen videoyu baştan sona üretir (ses yoksa pipeline/sesle.py ile seslendirir).
 
 Kullanım:
   python3 pipeline/uret.py masallar/002-ornek          # tek masal
@@ -41,7 +41,7 @@ def build(d, test_seconds=None):
     d = os.path.abspath(d)
     t0 = time.time()
     if not os.path.exists(os.path.join(d, 'audio', 'part1.mp3')):
-        sh([sys.executable, os.path.join(PIPE, 'sesle_edge.py'), d])
+        sh([sys.executable, os.path.join(PIPE, 'sesle.py'), d])
     work = tempfile.mkdtemp(prefix='masal_')
     shutil.copy(os.path.join(d, 'scenes.json'), work)
     os.symlink(os.path.join(d, 'audio'), os.path.join(work, 'audio'))
@@ -77,8 +77,8 @@ def build(d, test_seconds=None):
     m = read_meta(d)
     sec = dur(out)
     m.update(durum='video_hazir', sure=f'{int(sec // 60)}:{int(sec % 60):02d}',
-             ses=m.get('ses') or ('ElevenLabs' if not os.path.exists(os.path.join(d, 'audio', 'segments.json'))
-                                  else 'Edge TTS ' + os.environ.get('TTS_SES', 'tr-TR-EmelNeural')),
+             ses=(open(os.path.join(d, 'audio', 'motor.txt')).read().strip()
+                  if os.path.exists(os.path.join(d, 'audio', 'motor.txt')) else 'ElevenLabs'),
              video_uretim=datetime.now(TR).isoformat(timespec='minutes'))
     write_meta(d, m)
     shutil.rmtree(work, ignore_errors=True)

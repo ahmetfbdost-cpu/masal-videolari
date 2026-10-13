@@ -3,8 +3,10 @@
 3–9 yaş için özgün, Türkçe, seslendirmeli ve animasyonlu masal videoları.
 
 - `masallar/` — her masalın metni, sahne planı ve videosu
-- `pipeline/` — çizim, animasyon ve video üretim kodu (Python + Pillow + ffmpeg)
-- `OTOMASYON.md` — günlük zamanlanmış görevin (her gün 17:47) izlediği adımlar
+- `pipeline/` — çizim, animasyon ve video üretim kodu (Python + Pillow + ffmpeg, Edge TTS)
+- `.github/workflows/masal.yml` — ücretsiz üretim hattı (GitHub Actions); videolar **Releases** altında
+- `OTOMASYON.md` — günlük akış ve masal yazım kuralları · `KURULUM.md` — Gemini ve YouTube API kurulumu
+- `durum/son_calisma.json` — son Actions çalışmasının özeti
 
 <!-- MASAL_TABLOSU -->
 | No | Masal | Süre | Ses | Yazar | Durum |
