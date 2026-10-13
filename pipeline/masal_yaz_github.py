@@ -54,10 +54,15 @@ def call(messages, model, max_tokens=4000):
     req = urllib.request.Request(URL, body, {'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
                                              'Accept': 'application/json'})
     with urllib.request.urlopen(req, timeout=240) as r:
-        j = json.load(r)
-    txt = j['choices'][0]['message']['content']
-    txt = re.sub(r'^```(?:json)?|```$', '', txt.strip()).strip()
-    return json.loads(txt)
+        raw = r.read().decode('utf-8', 'replace')
+    try:
+        j = json.loads(raw)
+        txt = j['choices'][0]['message']['content'] or ''
+        txt = re.sub(r'^```(?:json)?|```$', '', txt.strip()).strip()
+        return json.loads(txt)
+    except Exception as e:
+        print('ham yanıt (ilk 600):', raw[:600], flush=True)
+        raise ValueError(f'yanıt çözülemedi: {e}')
 
 
 def call_any(messages, max_tokens=4000):
