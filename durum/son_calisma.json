@@ -1,9 +1,9 @@
 {
-  "zaman": "2026-10-29T20:03",
+  "zaman": "2026-10-30T19:57",
   "sonuc": "success",
   "tetik": "schedule",
   "islem": "gerekirse-yedek",
-  "calisma": "https://github.com/ahmetfbdost-cpu/masal-videolari/actions/runs/40917598887",
+  "calisma": "https://github.com/ahmetfbdost-cpu/masal-videolari/actions/runs/41094401422",
   "uretilenler": [],
   "gunluk_sonu": [
     "GEMINI_API_KEY tanımlı değil; yedek yazar atlandı (GitHub → Settings → Secrets → Actions).",
